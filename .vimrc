@@ -38,7 +38,6 @@ call plug#end()
 " }}}
 " fzf {{{
 " Configure FZF plugin
-
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
@@ -60,6 +59,9 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
+let g:fzf_files_options =
+  \ '--preview "head -10 {}"'
 " }}}
 " lightline {{{
 " Configure LightLine plugin
