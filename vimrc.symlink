@@ -107,11 +107,6 @@ endif
 " Splitting {{{
 set splitbelow
 set splitright
-
-nnoremap <leader>j <C-W><C-J>
-nnoremap <leader>k <C-W><C-K>
-nnoremap <leader>l <C-W><C-L>
-nnoremap <leader>h <C-W><C-H>
 " }}}
 " Color {{{
 syntax enable
@@ -175,6 +170,12 @@ nnoremap  <silent> <leader><s-tab>  :if &modifiable && !&readonly && &modified <
 " tab navigation
 nnoremap <silent> <tab> gt
 nnoremap <silent> <s-tab> gT
+
+" split navegation
+nnoremap <C-j> <C-W><C-J>
+nnoremap <C-k> <C-W><C-K>
+nnoremap <C-l> <C-W><C-L>
+nnoremap <C-h> <C-W><C-H>
 " }}}
 " Folding {{{
 set foldenable

@@ -22,6 +22,7 @@ formulas=(
     vim
     zsh
 	zsh-completions 
+	cmake
 )
 
 cask_formulas=(
@@ -63,3 +64,10 @@ if [[ "$SHELL" != "$zsh_path" ]]; then
     chsh -s "$zsh_path"
     echo "default shell changed to $zsh_path"
 fi
+
+
+# Install Karabiner-Elements for mapping the Caps Lock Key
+# git clone --depth 1 https://github.com/tekezo/Karabiner-Elements.git $HOME/.karabiner
+
+# cd $HOME/.karabiner
+# make package
