@@ -29,9 +29,11 @@ Plug 'w0rp/ale'
 Plug 'felixhummel/setcolors.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'sjl/badwolf'
+Plug 'sjl/gundo.vim'
 Plug 'tomasr/molokai'
 Plug 'alvan/vim-closetag'
 Plug 'Townk/vim-autoclose'
+Plug 'rking/ag.vim'
 
 call plug#end()
 
@@ -83,6 +85,14 @@ autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 " closetag {{{ 
 let g:closetag_filenames = '*.xml'
 " }}}
+" gundo {{{
+if has('python3')
+    let g:gundo_prefer_python3 = 1
+endif
+" }}}
+" ag {{{
+let g:ag_working_path_mode="r"
+" }}}
 " Splitting {{{
 set splitbelow
 set splitright
@@ -109,9 +119,34 @@ set wildmenu " visual autocomplete for command menu
 " }}}
 " Key Mappings {{{
 map ; :Files<CR>
-map <C-o> :NERDTreeToggle<CR>
+nnoremap <leader>o :NERDTreeToggle<CR>
 nnoremap <leader><space> :nohlsearch<CR>
+nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>a :Ag 
+
+" toggle folder
 nnoremap <space> za
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" move to beginning/end of line
+nnoremap B ^
+nnoremap E $
+
+" $/^ doesn't do anything
+nnoremap $ <nop>
+nnoremap ^ <nop>
+
+" edit vimrc/zshrc and load vimrc bindings
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>sz :source ~/.zshrc<CR>
+
+" save session
+nnoremap <leader>s :mksession<CR>
 " }}}
 " Folding {{{
 set foldenable
