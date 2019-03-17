@@ -1,5 +1,13 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/bin:$PATH
+export PATH=/usr/bin:$PATH
+export PATH=/usr/local/bin:$PATH
+export PATH=/sbin:$PATH
+export PATH=/usr/sbin:$PATH
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias dotfile-config='/usr/bin/git --git-dir=/Users/Erik/.dotfiles/ --work-tree=/Users/Erik'
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/Erik/.oh-my-zsh"
@@ -95,6 +103,3 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-alias dotfile-config='/usr/bin/git --git-dir=/Users/Erik/.dotfiles/ --work-tree=/Users/Erik'
