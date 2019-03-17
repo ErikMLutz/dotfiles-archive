@@ -165,6 +165,15 @@ nnoremap <leader>sz :source ~/.zshrc<CR>
 " save and restore session
 exec 'nnoremap <Leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
 exec 'nnoremap <Leader>sr :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+
+" buffer management
+nnoremap <leader>l :ls<CR>
+nnoremap  <silent>  <leader><tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bnext<CR>
+nnoremap  <silent> <leader><s-tab>  :if &modifiable && !&readonly && &modified <CR> :write<CR> :endif<CR>:bprevious<CR>
+
+" tab navigation
+nnoremap <silent> <tab> gt
+nnoremap <silent> <s-tab> gT
 " }}}
 " Folding {{{
 set foldenable
