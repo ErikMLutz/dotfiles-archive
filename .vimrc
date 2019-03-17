@@ -2,6 +2,7 @@
 " Init {{{
 let mapleader = "," " set leader key 
 set modelines=1 " tell vim to read the last line of the file for modes
+let g:sessions_dir = '~/.vim-sessions' " define folder to save sessions to
 "}}}
 " Install Plugins {{{
 
@@ -93,6 +94,16 @@ endif
 " ag {{{
 let g:ag_working_path_mode="r"
 " }}}
+" tmux {{{
+" allows cursor change in tmux mode
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+" }}}
 " Splitting {{{
 set splitbelow
 set splitright
@@ -116,8 +127,14 @@ set number " show line numbers
 set cursorline " highlight current line
 set showmatch " highlight matching [{()}]
 set wildmenu " visual autocomplete for command menu
+set wildmode=full " autofills first full match
+if $TERM_PROGRAM =~ "iTerm"
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7" " Vertical bar in insert mode
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
+endif
 " }}}
 " Key Mappings {{{
+" plugins
 map ; :Files<CR>
 nnoremap <leader>o :NERDTreeToggle<CR>
 nnoremap <leader><space> :nohlsearch<CR>
@@ -145,8 +162,9 @@ nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>sz :source ~/.zshrc<CR>
 
-" save session
-nnoremap <leader>s :mksession<CR>
+" save and restore session
+exec 'nnoremap <Leader>ss :mks! ' . g:sessions_dir . '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:sessions_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " }}}
 " Folding {{{
 set foldenable
@@ -158,10 +176,19 @@ set foldmethod=indent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set autoindent
+set smartindent
 " }}}
 " Searching {{{
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
+" }}}
+" Backups {{{
+set backup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set writebackup
 " }}}
 " Misc {{{
 set lazyredraw " redraw only when we need to.
