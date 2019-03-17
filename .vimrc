@@ -201,5 +201,6 @@ set writebackup
 " }}}
 " Misc {{{
 set lazyredraw " redraw only when we need to.
+set clipboard=unnamed " use the default OSX clipboard
 " }}}
 " vim:foldmethod=marker:foldlevel=0
