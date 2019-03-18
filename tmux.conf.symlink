@@ -56,3 +56,4 @@ unbind ^A
 bind ^A select-pane -t :.+
 
 run-shell "tmux source-file ~/.tmux.theme"
+set -g default-terminal "screen-256color"

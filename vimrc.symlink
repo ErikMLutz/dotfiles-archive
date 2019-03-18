@@ -112,6 +112,7 @@ set splitright
 syntax enable
 autocmd VimEnter * SetColors default solarized molokai badwolf koehler
 set background=dark
+set t_Co=256
 colorscheme badwolf
 " }}}
 " UI {{{
