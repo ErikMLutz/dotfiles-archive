@@ -55,5 +55,14 @@ bind l select-pane -R
 unbind ^A
 bind ^A select-pane -t :.+
 
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
+# Resize pane shortcuts
+bind -r H resize-pane -L 1
+bind -r J resize-pane -D 1
+bind -r K resize-pane -U 1
+bind -r L resize-pane -R 1
+
 run-shell "tmux source-file ~/.tmux.theme"
 set -g default-terminal "screen-256color"
