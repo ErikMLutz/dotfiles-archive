@@ -54,3 +54,5 @@ bind l select-pane -R
 # quick pane cycling
 unbind ^A
 bind ^A select-pane -t :.+
+
+run-shell "tmux source-file ~/.tmux.theme"
