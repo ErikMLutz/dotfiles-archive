@@ -19,4 +19,4 @@ if [ "$(uname)" == "Darwin" ]; then
 
 fi
 
-
+# npm -g install instant-markdown-d

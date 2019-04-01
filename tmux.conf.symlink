@@ -32,6 +32,9 @@ setw -g pane-base-index 1
 
 set-option -g set-titles on
 set-option -g set-titles-string "#T - #W"
+
+set -g mouse on
+set-window-option -g mode-keys vi
 # set-window-option -g automatic-rename on
 #
 # ######################
@@ -66,3 +69,16 @@ bind -r L resize-pane -R 1
 
 run-shell "tmux source-file ~/.tmux.theme"
 set -g default-terminal "screen-256color"
+
+
+set -g status-right '%a %Y-%m-%d %H:%M:%S'
+
+
+
+
+
+
+
+
+
+

@@ -23,6 +23,9 @@ formulas=(
     zsh
 	zsh-completions 
 	cmake
+	node
+	nvim
+	pandoc
 )
 
 cask_formulas=(

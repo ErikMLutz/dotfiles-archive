@@ -35,6 +35,12 @@ Plug 'tomasr/molokai'
 Plug 'alvan/vim-closetag'
 Plug 'Townk/vim-autoclose'
 Plug 'rking/ag.vim'
+Plug 'ajh17/VimCompletesMe'
+Plug 'vimwiki/vimwiki'
+Plug 'mattn/calendar-vim'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'suan/vim-instant-markdown'
 
 call plug#end()
 
@@ -108,6 +114,41 @@ endif
 let g:rooter_change_directory_for_non_project_files = ''
 let g:rooter_manual_only = 1
 " }}}
+" calendar-vim {{{
+let g:calendar_options = 'nornu'
+function! ToggleCalendar()
+  execute ":Calendar"
+  if exists("g:calendar_open")
+    if g:calendar_open == 1
+      execute "q"
+      unlet g:calendar_open
+    else
+      g:calendar_open = 1
+    end
+  else
+    let g:calendar_open = 1
+  end
+endfunction
+" }}}
+" vimwiki {{{
+let g:vimwiki_list = [{
+	\ 'path':'~/.vimwiki',
+	\ 'path_html':'~/.vimwiki/html/',
+	\ 'syntax':'markdown',
+	\ 'ext':'.md',
+	\ 'custom_wiki2html':'vimwiki_markdown',
+	\ 'template_ext':'.tpl'}] 
+au BufRead,BufNewFile *.wiki set filetype=vimwiki
+au BufRead,BufNewFile *.md set filetype=vimwiki
+:autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
+au FileType vimwiki set syntax=markdown
+" }}}
+" vim-markdown {{{
+
+" }}}
+" vim-instant-markdown {{{
+let g:instant_markdown_autostart = 0
+" }}}
 " Splitting {{{
 set splitbelow
 set splitright
@@ -133,6 +174,7 @@ if $TERM_PROGRAM =~ "iTerm"
     let &t_EI = "\<Esc>]50;CursorShape=0\x7" " Block in normal mode
 endif
 set backspace=2 " allow backspacing over end of lines
+set relativenumber " line numbers relative to current line
 " }}}
 " Key Mappings {{{
 " plugins
@@ -158,7 +200,7 @@ nnoremap $ <nop>
 nnoremap ^ <nop>
 
 " edit vimrc/zshrc and load vimrc bindings
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ev :vsp ~/.vimrc<CR>
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>sz :source ~/.zshrc<CR>
@@ -175,12 +217,29 @@ nnoremap  <silent> <leader><s-tab>  :if &modifiable && !&readonly && &modified <
 " tab navigation
 nnoremap <silent> <tab> gt
 nnoremap <silent> <s-tab> gT
+nnoremap <silent> <leader>t :tabnew<CR>
 
-" split navegation
+" split navigation
 nnoremap <C-j> <C-W><C-J>
 nnoremap <C-k> <C-W><C-K>
 nnoremap <C-l> <C-W><C-L>
 nnoremap <C-h> <C-W><C-H>
+nnoremap <silent> <C-s> :vsplit<CR>
+
+" saving and exiting
+noremap <silent> <leader>q :q!<CR>
+nnoremap <silent> <leader>w :w<CR>
+
+" vimwiki
+nmap <Leader>wn <Plug>VimwikiNextLink
+nmap <Leader>wp <Plug>VimwikiPrevLink
+
+" moving lines
+nmap ∆ :m +1<CR>
+nmap ˚ :m -2<CR>
+
+" using enter to select items from autocomplete menu without inserting new line
+inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
 " }}}
 " Folding {{{
 set foldenable
