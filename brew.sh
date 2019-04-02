@@ -26,6 +26,7 @@ formulas=(
 	node
 	nvim
 	pandoc
+	task
 )
 
 cask_formulas=(
