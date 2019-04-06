@@ -2,6 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export DOTFILES=$HOME/.dotfiles
 
+export PATH=/usr/local/opt/grep/libexec/gnubin:$PATH
 export PATH=/bin:$PATH
 export PATH=/usr/bin:$PATH
 export PATH=/usr/local/bin:$PATH
@@ -82,6 +83,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 plugins=(
   git
   zsh-autosuggestions
+  zsh-syntax-highlighting
   docker
 )
 autoload -U compinit && compinit

@@ -41,6 +41,7 @@ Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'suan/vim-instant-markdown'
+Plug 'tbabej/taskwiki'
 
 call plug#end()
 
@@ -143,8 +144,13 @@ au BufRead,BufNewFile *.md set filetype=vimwiki
 :autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
 au FileType vimwiki set syntax=markdown
 " }}}
+" taskwiki {{{
+let g:taskwiki_markup_syntax = 'markdown'
+" }}}
 " vim-markdown {{{
-
+:autocmd FileType markdown 
+    \ set formatoptions-=q |
+    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 " }}}
 " vim-instant-markdown {{{
 let g:instant_markdown_autostart = 0
@@ -231,8 +237,8 @@ noremap <silent> <leader>q :q!<CR>
 nnoremap <silent> <leader>w :w<CR>
 
 " vimwiki
-nmap <Leader>wn <Plug>VimwikiNextLink
-nmap <Leader>wp <Plug>VimwikiPrevLink
+nmap <Leader>wn <Plug>VimwikiDiaryNextDay
+nmap <Leader>wp <Plug>VimwikiDiaryPrevDay
 
 " moving lines
 nmap ∆ :m +1<CR>
@@ -257,6 +263,8 @@ set smartindent
 " Searching {{{
 set incsearch " search as characters are entered
 set hlsearch " highlight matches
+set ignorecase " case insensitive searches
+set smartcase " case sensitive if upper case letters in search
 " }}}
 " Backups {{{
 set backup
