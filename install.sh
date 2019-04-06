@@ -223,18 +223,18 @@ for obj in $(find . -type f | sed -e "s/^\.\///g"); do
 	mkdir -p $(dirname $obj)
 
 	# if the file exists:
-	if [[ -e ~/'$obj' ]] && [[ ! $backup_dotfiles =~ (n|no|N) ]] ; then
-		mkdir -p ~/.dotfiles_backup/$now/$(dirname '$obj')
-		mv ~/'$obj' ~/.dotfiles_backup/$now/'$obj'
+	if [[ -e ~/"$obj" ]] && [[ ! $backup_dotfiles =~ (n|no|N) ]] ; then
+		mkdir -p ~/.dotfiles_backup/$now/$(dirname "$obj")
+		mv ~/"$obj" ~/.dotfiles_backup/$now/"$obj"
 		echo -n "backup saved at ~/.dotfiles_backup/$now/$obj, "
 	fi
 
 	# symlink might still exist
-	unlink ~/'$obj' > /dev/null 2>&1
+	unlink ~/"$obj" > /dev/null 2>&1
 
 	# create the link
-	ln -s ~/.dotfiles/home/'$obj' ~/'$obj'
-	echo -en 'link created. ';chk
+	ln -s ~/.dotfiles/home/"$obj" ~/"$obj"
+	echo -en "link created. ";chk
 done
 
 unset IFS
