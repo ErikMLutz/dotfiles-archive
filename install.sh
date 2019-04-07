@@ -98,8 +98,6 @@ brew_packages=(
 	vim
 	wget
 	zsh
-	zsh-autosuggestions 
-	zsh-syntax-highlighting
 )
 
 for pkg in "${brew_packages[@]}"; do require_brew $pkg; done
@@ -145,7 +143,7 @@ running "installing karabiner"
 if [[ ! -d /Applications/Karabiner-Elements.app ]]; then
 	git clone --depth 1 https://github.com/tekezo/Karabiner-Elements.git ~/.karabiner > /dev/null 2>&1
 	pushd ~/.karabiner > /dev/null 2>&1
-	make package  > /dev/null 2>&1
+	make package  > /dev/null 
 	chk
 	popd > /dev/null 2>&1
 else ok
@@ -220,7 +218,7 @@ for obj in $(find . -type f | sed -e "s/^\.\///g"); do
 	running "~/$obj"
 
 	# create directory if necessary
-	mkdir -p $(dirname $obj)
+	mkdir -p ~/"$(dirname $obj)"
 
 	# if the file exists:
 	if [[ -e ~/"$obj" ]] && [[ ! $backup_dotfiles =~ (n|no|N) ]] ; then
