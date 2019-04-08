@@ -40,6 +40,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'mattn/calendar-vim'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'masukomi/vim-markdown-folding'
 Plug 'suan/vim-instant-markdown'
 Plug 'tbabej/taskwiki'
 
@@ -141,14 +142,13 @@ let g:vimwiki_list = [{
 	\ 'template_ext':'.tpl'}] 
 au BufRead,BufNewFile *.wiki set filetype=vimwiki
 au BufRead,BufNewFile *.md set filetype=vimwiki
-:autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
-au FileType vimwiki set syntax=markdown
+autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
 " }}}
 " taskwiki {{{
 let g:taskwiki_markup_syntax = 'markdown'
 " }}}
 " vim-markdown {{{
-:autocmd FileType markdown 
+autocmd FileType vimwiki 
     \ set formatoptions-=q |
     \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 " }}}
@@ -272,6 +272,15 @@ set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+" }}}
+" File Type Specific Settings {{{
+" Python {{{
+augroup python
+	autocmd!
+	autocmd Filetype python tnoremap <ESC> <C-\><C-n>
+	autocmd Filetype python nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:ter python3 %<CR>
+augroup END
+" }}}
 " }}}
 " Misc {{{
 set lazyredraw " redraw only when we need to.
