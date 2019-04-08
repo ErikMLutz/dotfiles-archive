@@ -135,6 +135,7 @@ let g:vimwiki_list = [{
 au BufRead,BufNewFile *.wiki set filetype=vimwiki
 au BufRead,BufNewFile *.md set filetype=vimwiki
 autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
+au FileType vimwiki set syntax=markdown
 " }}}
 " vim-markdown {{{
 autocmd FileType vimwiki 
