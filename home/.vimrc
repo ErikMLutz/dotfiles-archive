@@ -15,37 +15,62 @@ endif
 
 " Specify plugins for installation
 call plug#begin('~/.vim/plugged')
-
-Plug 'airblade/vim-gitgutter' " adds modification indicators to gutter
-Plug 'airblade/vim-rooter' " cd's to project root directory on file open
-Plug 'editorconfig/editorconfig-vim'
-Plug 'itchyny/lightline.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'w0rp/ale'
-Plug 'felixhummel/setcolors.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'sjl/badwolf'
-Plug 'sjl/gundo.vim'
-Plug 'tomasr/molokai'
-Plug 'alvan/vim-closetag'
-Plug 'Townk/vim-autoclose'
-Plug 'rking/ag.vim'
-Plug 'ajh17/VimCompletesMe'
-Plug 'vimwiki/vimwiki'
-Plug 'mattn/calendar-vim'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
-Plug 'masukomi/vim-markdown-folding'
-Plug 'suan/vim-instant-markdown'
-Plug 'tbabej/taskwiki'
-
+  Plug 'airblade/vim-gitgutter' " adds modification indicators to gutter
+  Plug 'airblade/vim-rooter' " cd's to project root directory on file open
+  Plug 'editorconfig/editorconfig-vim'
+  Plug 'itchyny/lightline.vim'
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
+  Plug 'scrooloose/nerdtree'
+  Plug 'tpope/vim-eunuch'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-fugitive'
+  Plug 'w0rp/ale'
+  Plug 'felixhummel/setcolors.vim'
+  Plug 'altercation/vim-colors-solarized'
+  Plug 'sjl/badwolf'
+  Plug 'sjl/gundo.vim'
+  Plug 'tomasr/molokai'
+  Plug 'alvan/vim-closetag'
+  Plug 'Townk/vim-autoclose'
+  Plug 'rking/ag.vim'
+  Plug 'ajh17/VimCompletesMe'
+  Plug 'vimwiki/vimwiki'
+  Plug 'mattn/calendar-vim'
+  Plug 'godlygeek/tabular'
+  Plug 'plasticboy/vim-markdown'
+  Plug 'masukomi/vim-markdown-folding'
+  Plug 'suan/vim-instant-markdown'
+  Plug 'tbabej/taskwiki'
 call plug#end()
 
+" }}}
+" Configure Plugins {{{
+" ag {{{
+let g:ag_working_path_mode="r"
+" }}}
+" calendar-vim {{{
+let g:calendar_options = 'nornu'
+function! ToggleCalendar()
+  execute ":Calendar"
+  if exists("g:calendar_open")
+    if g:calendar_open == 1
+      execute "q"
+      unlet g:calendar_open
+    else
+      g:calendar_open = 1
+    end
+  else
+    let g:calendar_open = 1
+  end
+endfunction
+" }}}
+" closetag {{{ 
+let g:closetag_filenames = '*.xml'
+" }}}
+" filetype {{{
+filetype indent on
+autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 " }}}
 " fzf {{{
 " Configure FZF plugin
@@ -74,6 +99,11 @@ let g:fzf_colors =
 let g:fzf_files_options =
   \ '--preview "head -10 {}"'
 " }}}
+" gundo {{{
+if has('python3')
+    let g:gundo_prefer_python3 = 1
+endif
+" }}}
 " lightline {{{
 " Configure LightLine plugin
 let g:lightline = {
@@ -87,50 +117,12 @@ let g:lightline = {
   \     },
   \ }
 " }}}
-" filetype {{{
-filetype indent on
-autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
-" }}}
-" closetag {{{ 
-let g:closetag_filenames = '*.xml'
-" }}}
-" gundo {{{
-if has('python3')
-    let g:gundo_prefer_python3 = 1
-endif
-" }}}
-" ag {{{
-let g:ag_working_path_mode="r"
-" }}}
-" tmux {{{
-" allows cursor change in tmux mode
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-" }}}
 " rooter {{{
 let g:rooter_change_directory_for_non_project_files = ''
 let g:rooter_manual_only = 1
 " }}}
-" calendar-vim {{{
-let g:calendar_options = 'nornu'
-function! ToggleCalendar()
-  execute ":Calendar"
-  if exists("g:calendar_open")
-    if g:calendar_open == 1
-      execute "q"
-      unlet g:calendar_open
-    else
-      g:calendar_open = 1
-    end
-  else
-    let g:calendar_open = 1
-  end
-endfunction
+" taskwiki {{{
+let g:taskwiki_markup_syntax = 'markdown'
 " }}}
 " vimwiki {{{
 let g:vimwiki_list = [{
@@ -144,9 +136,6 @@ au BufRead,BufNewFile *.wiki set filetype=vimwiki
 au BufRead,BufNewFile *.md set filetype=vimwiki
 autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
 " }}}
-" taskwiki {{{
-let g:taskwiki_markup_syntax = 'markdown'
-" }}}
 " vim-markdown {{{
 autocmd FileType vimwiki 
     \ set formatoptions-=q |
@@ -154,6 +143,17 @@ autocmd FileType vimwiki
 " }}}
 " vim-instant-markdown {{{
 let g:instant_markdown_autostart = 0
+" }}}
+" }}}
+" tmux {{{
+" allows cursor change in tmux mode
+if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
 " }}}
 " Splitting {{{
 set splitbelow
