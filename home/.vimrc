@@ -247,6 +247,9 @@ nmap ˚ :m -2<CR>
 
 " using enter to select items from autocomplete menu without inserting new line
 inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
+
+" terminal bindings
+tnoremap <ESC> <C-\><C-n>
 " }}}
 " Folding {{{
 set foldenable
@@ -278,8 +281,22 @@ set writebackup
 " Python {{{
 augroup python
 	autocmd!
-	autocmd Filetype python tnoremap <ESC> <C-\><C-n>
-	autocmd Filetype python nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:ter python3 %<CR>
+	autocmd Filetype python nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:terminal python3 %<CR>
+augroup END
+" }}}
+" C++ {{{
+augroup cpp
+	autocmd!
+	autocmd Filetype cpp nnoremap <C-C> :w<CR>:split<CR>:resize 20<CR>:terminal g++ -o %:r.out %<CR> 
+	autocmd Filetype cpp nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:terminal ./%:r.out<CR>
+augroup END
+" }}}
+" fzf {{{
+" define this so that we can escape out of fzf terminal interface
+" the usual mapping doesn't work here
+augroup fzf
+	autocmd!
+	autocmd Filetype fzf tnoremap <buffer> <ESC> <ESC>
 augroup END
 " }}}
 " }}}
