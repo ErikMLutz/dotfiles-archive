@@ -39,9 +39,9 @@ call plug#begin('~/.vim/plugged')
   Plug 'mattn/calendar-vim'
   Plug 'godlygeek/tabular'
   Plug 'plasticboy/vim-markdown'
-  Plug 'masukomi/vim-markdown-folding'
   Plug 'suan/vim-instant-markdown'
   Plug 'tbabej/taskwiki'
+  Plug 'chrisbra/csv.vim'
 call plug#end()
 
 " }}}
@@ -132,10 +132,6 @@ let g:vimwiki_list = [{
 	\ 'ext':'.md',
 	\ 'custom_wiki2html':'vimwiki_markdown',
 	\ 'template_ext':'.tpl'}] 
-au BufRead,BufNewFile *.wiki set filetype=vimwiki
-au BufRead,BufNewFile *.md set filetype=vimwiki
-autocmd FileType vimwiki map <leader>wc :call ToggleCalendar()<CR>
-au FileType vimwiki set syntax=markdown
 " }}}
 " vim-markdown {{{
 autocmd FileType vimwiki 
@@ -297,6 +293,45 @@ augroup END
 augroup fzf
 	autocmd!
 	autocmd Filetype fzf tnoremap <buffer> <ESC> <ESC>
+augroup END
+" }}}
+" vimwiki {{{
+function Vimwiki_dirs()
+	let l:dir_list = []
+	echo l:dir_list
+endfunction
+
+function! MarkdownLevel()
+    if getline(v:lnum) =~ '^# .*$'
+        return ">1"
+    endif
+    if getline(v:lnum) =~ '^## .*$'
+        return ">2"
+    endif
+    if getline(v:lnum) =~ '^### .*$'
+        return ">3"
+    endif
+    if getline(v:lnum) =~ '^#### .*$'
+        return ">4"
+    endif
+    if getline(v:lnum) =~ '^##### .*$'
+        return ">5"
+    endif
+    if getline(v:lnum) =~ '^###### .*$'
+        return ">6"
+    endif
+    return "=" 
+endfunction
+
+augroup vimwiki
+	autocmd!
+	autocmd BufRead,BufNewFile *.wiki set filetype=vimwiki
+	autocmd BufRead,BufNewFile *.md set filetype=vimwiki
+	autocmd FileType vimwiki nnoremap <leader>wc :call ToggleCalendar()<CR>
+	autocmd FileType vimwiki setlocal syntax=markdown
+	autocmd FileType vimwiki setlocal expandtab
+	autocmd FileType vimwiki setlocal foldexpr=MarkdownLevel()  
+	autocmd FileType vimwiki setlocal foldmethod=expr  
 augroup END
 " }}}
 " }}}
