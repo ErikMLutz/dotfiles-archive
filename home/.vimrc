@@ -140,6 +140,7 @@ let g:vimwiki_folding = 'custom'
 "    \ set formatoptions-=q |
 "    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
 let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_fenced_languages = ['python=python', 'csharp=cs', 'c++=cpp', 'viml=vim', 'bash=sh']
 " }}}
 " vim-instant-markdown {{{
 let g:instant_markdown_autostart = 0
@@ -299,9 +300,21 @@ augroup fzf
 augroup END
 " }}}
 " vimwiki {{{
-function Vimwiki_dirs()
+function! Vimwiki_dirs()
 	let l:dir_list = []
-	echo l:dir_list
+	for item in g:vimwiki_list
+		let l:dir_list += [substitute(item['path'], '\~', $HOME,"")]
+	endfor
+	return l:dir_list
+endfunction
+
+function! IsVimwikiFile()
+	let l:dirs = Vimwiki_dirs()
+	for dir in l:dirs
+		let l:match = match(@%, dir)
+		if l:match != -1 | return 1 | endif
+	endfor
+	return 0
 endfunction
 
 function! MarkdownLevel()
@@ -328,8 +341,7 @@ endfunction
 
 augroup vimwiki
 	autocmd!
-	autocmd BufRead,BufNewFile *.wiki set filetype=vimwiki
-	autocmd BufRead,BufNewFile *.md set filetype=vimwiki
+	autocmd BufRead,BufNewFile *.wiki,*.md set filetype=vimwiki
 	autocmd FileType vimwiki nnoremap <leader>wc :call ToggleCalendar()<CR>
 	autocmd FileType vimwiki setlocal syntax=markdown
 	autocmd FileType vimwiki setlocal expandtab
