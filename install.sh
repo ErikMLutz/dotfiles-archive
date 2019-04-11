@@ -2,6 +2,7 @@
 
 # Get colorschemed logging functions
 source ~/.dotfiles/utils/log.sh
+source ~/.dotfiles/utils/funcs.sh
 source ~/.dotfiles/utils/requirers.sh
 
 echo -e "\n\nDOTFILES AUTOMATIC INSTALLATION AND SYSTEM CONFIGURATION"

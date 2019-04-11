@@ -123,6 +123,7 @@ let g:rooter_manual_only = 1
 " }}}
 " taskwiki {{{
 let g:taskwiki_markup_syntax = 'markdown'
+let g:taskwiki_dont_preserve_folds = 1
 " }}}
 " vimwiki {{{
 let g:vimwiki_list = [{
@@ -132,11 +133,13 @@ let g:vimwiki_list = [{
 	\ 'ext':'.md',
 	\ 'custom_wiki2html':'vimwiki_markdown',
 	\ 'template_ext':'.tpl'}] 
+let g:vimwiki_folding = 'custom'
 " }}}
 " vim-markdown {{{
-autocmd FileType vimwiki 
-    \ set formatoptions-=q |
-    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
+"autocmd FileType vimwiki 
+"    \ set formatoptions-=q |
+"    \ set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*\[-*+]\\s\\+
+let g:vim_markdown_folding_disabled = 1
 " }}}
 " vim-instant-markdown {{{
 let g:instant_markdown_autostart = 0
@@ -332,6 +335,35 @@ augroup vimwiki
 	autocmd FileType vimwiki setlocal expandtab
 	autocmd FileType vimwiki setlocal foldexpr=MarkdownLevel()  
 	autocmd FileType vimwiki setlocal foldmethod=expr  
+augroup END
+" }}}
+" markdown {{{
+function! MarkdownLevel()
+    if getline(v:lnum) =~ '^# .*$'
+        return ">1"
+    endif
+    if getline(v:lnum) =~ '^## .*$'
+        return ">2"
+    endif
+    if getline(v:lnum) =~ '^### .*$'
+        return ">3"
+    endif
+    if getline(v:lnum) =~ '^#### .*$'
+        return ">4"
+    endif
+    if getline(v:lnum) =~ '^##### .*$'
+        return ">5"
+    endif
+    if getline(v:lnum) =~ '^###### .*$'
+        return ">6"
+    endif
+    return "=" 
+endfunction
+
+augroup markdown
+	autocmd!
+	autocmd BufRead,BufNewFile *.md setlocal foldmethod=expr
+	autocmd BufRead,BufNewFile *.md setlocal foldexpr=MarkdownLevel()  
 augroup END
 " }}}
 " }}}
