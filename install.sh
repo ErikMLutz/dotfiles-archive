@@ -11,79 +11,84 @@ echo -e "This program will install a variety of software elements, change system
 ################################################################
 # Administrator Access
 ################################################################
-msg "Configuring SUDO access."
+if [[ $# -eq 0 ]] || containsElement sudo $@; then
+	msg "Configuring SUDO access."
 
-sudo -v
-# Keep-alive: update existing sudo time stamp until the script has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+	sudo -v
+	# Keep-alive: update existing sudo time stamp until the script has finished
+	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Check for existing passwordless sudo access
-grep -q 'NOPASSWD:     ALL' /etc/sudoers.d/$LOGNAME > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-  echo "Couldn't find exisiting sudoer file."
+	# Check for existing passwordless sudo access
+	grep -q 'NOPASSWD:     ALL' /etc/sudoers.d/$LOGNAME > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "Couldn't find exisiting sudoer file."
 
-  rsp "Configure passwordless sudo access? [y|N]" response
+		rsp "Configure passwordless sudo access? [y|N]" response
 
-  if [[ $response =~ (yes|y|Y) ]];then
-	if ! grep -q "#includedir /private/etc/sudoers.d" /etc/sudoers; then
-	  echo '#includedir /private/etc/sudoers.d' | sudo tee -a /etc/sudoers > /dev/null
+		if [[ $response =~ (yes|y|Y) ]];then
+			if ! grep -q "#includedir /private/etc/sudoers.d" /etc/sudoers; then
+				echo '#includedir /private/etc/sudoers.d' | sudo tee -a /etc/sudoers > /dev/null
+			fi
+			echo -e "Defaults:$LOGNAME    !requiretty\n$LOGNAME ALL=(ALL) NOPASSWD:     ALL" | sudo tee /etc/sudoers.d/$LOGNAME
+			echo "Passwordless sudo access configured."
+		fi
+	else
+		echo "Sudoer file already exists." 
 	fi
-	echo -e "Defaults:$LOGNAME    !requiretty\n$LOGNAME ALL=(ALL) NOPASSWD:     ALL" | sudo tee /etc/sudoers.d/$LOGNAME
-	echo "Passwordless sudo access configured."
-  fi
-else
-  echo "Sudoer file already exists." 
 fi
 
 ################################################################
 # Build Tools
 ################################################################
-msg "Installing build tools."
+if [[ $# -eq 0 ]] || containsElement tools $@; then
+	msg "Installing build tools."
 
-running "installing xcode"
-xcode-select --install > /dev/null 2>&1 
-sudo xcode-select -s /Library/Developer/CommandLineTools > /dev/null 2>&1 
-ok
+	running "installing xcode"
+	xcode-select --install > /dev/null 2>&1 
+	sudo xcode-select -s /Library/Developer/CommandLineTools > /dev/null 2>&1 
+	ok
 
-running "installing homebrew"
-brew_bin=$(which brew) > /dev/null 2>&1 
-if [[ $? != 0 ]]; then
-  action "installing homebrew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  if [[ $? != 0 ]]; then
-    error "homebrew install failed. aborting script $0."
-    exit
-  fi
-else
-  ok
-  rsp "run brew update & upgrade? [y|N]" response
-  if [[ $response =~ (y|yes|Y) ]]; then
-    running "updating homebrew"
-    brew update > /dev/null
-    chk
-    running "upgrading brew packages"
-    brew upgrade > /dev/null
-    chk
-  else
-    ok "skipped brew package upgrades.\n"
-  fi
+	running "installing homebrew"
+	brew_bin=$(which brew) > /dev/null 2>&1 
+	if [[ $? != 0 ]]; then
+		action "installing homebrew"
+		ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+		if [[ $? != 0 ]]; then
+			error "homebrew install failed. aborting script $0."
+			exit
+		fi
+	else
+		ok
+		rsp "run brew update & upgrade? [y|N]" response
+		if [[ $response =~ (y|yes|Y) ]]; then
+			running "updating homebrew"
+			brew update > /dev/null
+			chk
+			running "upgrading brew packages"
+			brew upgrade > /dev/null
+			chk
+		else
+			ok "skipped brew package upgrades.\n"
+		fi
+	fi
+
+	running "installing brew-cask"
+	output=$(brew tap | grep cask)
+	if [[ $? != 0 ]]; then
+		action "installing brew-cask"
+		require_brew caskroom/cask/brew-cask
+	fi
+	brew tap caskroom/versions > /dev/null 2>&1
+	chk
 fi
-
-running "installing brew-cask"
-output=$(brew tap | grep cask)
-if [[ $? != 0 ]]; then
-  action "installing brew-cask"
-  require_brew caskroom/cask/brew-cask
-fi
-brew tap caskroom/versions > /dev/null 2>&1
-chk
 
 ################################################################
 # Program Installations
 ################################################################
-msg "Installing programs and utilities"
+if [[ $# -eq 0 ]] || containsElement packages $@; then
+	msg "Installing programs and utilities"
 
-brew_packages=(
+	brew_packages=(
 	cmake
 	fzf
 	git
@@ -99,35 +104,35 @@ brew_packages=(
 	vim
 	wget
 	zsh
-)
+	)
 
-for pkg in "${brew_packages[@]}"; do require_brew $pkg; done
+	for pkg in "${brew_packages[@]}"; do require_brew $pkg; done
 
-cask_packages=(
-  iterm2
-)
+	cask_packages=(
+	iterm2
+	)
 
-for pkg in "${cask_packages[@]}"; do require_cask $pkg; done
+	for pkg in "${cask_packages[@]}"; do require_cask $pkg; done
 
-nvm_packages=(
+	nvm_packages=(
 	stable
-)
+	)
 
-for pkg in "${nvm_packages[@]}"; do require_nvm $pkg; done
+	for pkg in "${nvm_packages[@]}"; do require_nvm $pkg; done
 
 
-npm config set save-exact true
+	npm config set save-exact true
 
-npm_packages=(
+	npm_packages=(
 	instant-markdown-d  
-)
+	)
 
-for pkg in "${npm_packages[@]}"; do require_npm $pkg; done
+	for pkg in "${npm_packages[@]}"; do require_npm $pkg; done
 
-running "running homebrew cleanup"
-brew cleanup --force > /dev/null 2>&1
-rm -f -r /Library/Caches/Homebrew/* > /dev/null 2>&1
-chk
+	running "running homebrew cleanup"
+	brew cleanup --force > /dev/null 2>&1
+	rm -f -r /Library/Caches/Homebrew/* > /dev/null 2>&1
+	chk
 
 # Install Oh-My-Zsh
 running "installing oh-my-zsh"
@@ -149,74 +154,80 @@ if [[ ! -d /Applications/Karabiner-Elements.app ]]; then
 	popd > /dev/null 2>&1
 else ok
 fi
+fi
 
 ################################################################
 # Git Configuration
 ################################################################
-msg "Configuring Git."
+if [[ $# -eq 0 ]] || containsElement git $@; then
+	msg "Configuring Git."
 
-defaultName=$( git config --global user.name )
-defaultEmail=$( git config --global user.email )
-defaultGithub=$( git config --global github.user )
+	defaultName=$( git config --global user.name )
+	defaultEmail=$( git config --global user.email )
+	defaultGithub=$( git config --global github.user )
 
-echo -e "Current configuration:\n  Name: $defaultName\n  Email: $defaultEmail\n  GitHub Username: $defaultGithub"
+	echo -e "Current configuration:\n  Name: $defaultName\n  Email: $defaultEmail\n  GitHub Username: $defaultGithub"
 
-rsp "Do you wish to modify this configuration? [y|N]" response
+	rsp "Do you wish to modify this configuration? [y|N]" response
 
-if [[ $response =~ (y|yes|Y) ]]; then
-  rsp "Name [$defaultName]:" name
-  rsp "Email [$defaultEmail]:" email 
-  rsp "Github username [$defaultGithub]:" github
+	if [[ $response =~ (y|yes|Y) ]]; then
+		rsp "Name [$defaultName]:" name
+		rsp "Email [$defaultEmail]:" email 
+		rsp "Github username [$defaultGithub]:" github
 
-  git config --global user.name "${name:-$defaultName}"
-  git config --global user.email "${email:-$defaultEmail}"
-  git config --global github.user "${github:-$defaultGithub}"
+		git config --global user.name "${name:-$defaultName}"
+		git config --global user.email "${email:-$defaultEmail}"
+		git config --global github.user "${github:-$defaultGithub}"
 
-  if [[ "$( uname )" == "Darwin" ]]; then
-	git config --global credential.helper "osxkeychain"
-  else
-	  rsp "Save user and password to an unencrypted file to avoid writing? [y|N]" save
-	  if [[ $save =~ ^([Yy])$ ]]; then
-			  git config --global credential.helper "store"
-	  else
-			  git config --global credential.helper "cache --timeout 3600"
-	  fi
-  fi
+		if [[ "$( uname )" == "Darwin" ]]; then
+			git config --global credential.helper "osxkeychain"
+		else
+			rsp "Save user and password to an unencrypted file to avoid writing? [y|N]" save
+			if [[ $save =~ ^([Yy])$ ]]; then
+				git config --global credential.helper "store"
+			else
+				git config --global credential.helper "cache --timeout 3600"
+			fi
+		fi
+	fi
 fi
 
 ################################################################
 # Shell Configuration
 ################################################################
-msg "Configuring Shell."
+if [[ $# -eq 0 ]] || containsElement shell $@; then
+	msg "Configuring Shell."
 
-running "setting '/usr/local/bin/zsh' as your shell"
-CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
-if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
-  sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
-fi
-chk
+	running "setting '/usr/local/bin/zsh' as your shell"
+	CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
+	if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
+		sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
+	fi
+	chk
 
-running "installing powerlevel9k theme"
-if [[ ! -d ~/".oh-my-zsh/custom/themes/powerlevel9k" ]]; then
-  git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+	running "installing powerlevel9k theme"
+	if [[ ! -d ~/".oh-my-zsh/custom/themes/powerlevel9k" ]]; then
+		git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+	fi
+	chk
 fi
-chk
 
 ################################################################
 # Dotfile Symlinks
 ################################################################
-msg "Creating dotfile symlinks."
+if [[ $# -eq 0 ]] || containsElement links $@; then
+	msg "Creating dotfile symlinks."
 
-rsp "Do you wish to backup existing dotfiles? [Y|n]" backup_dotfiles
-echo
+	rsp "Do you wish to backup existing dotfiles? [Y|n]" backup_dotfiles
+	echo
 
-pushd ~/.dotfiles/home > /dev/null 2>&1
-now=$(date +"%Y.%m.%d.%H.%M.%S")
+	pushd ~/.dotfiles/home > /dev/null 2>&1
+	now=$(date +"%Y.%m.%d.%H.%M.%S")
 
-IFS=$'\n' # make newlines the only separator so that Application Support doesn't get split
-for obj in $(find . -type f | sed -e "s/^\.\///g"); do
+	IFS=$'\n' # make newlines the only separator so that Application Support doesn't get split
+	for obj in $(find . -type f | sed -e "s/^\.\///g"); do
 
-	running "~/$obj"
+		running "~/$obj"
 
 	# create directory if necessary
 	mkdir -p ~/"$(dirname $obj)"
@@ -238,54 +249,59 @@ done
 
 unset IFS
 popd > /dev/null 2>&1
+fi
 
 ################################################################
 # VIM/NeoVIM Setup
 ################################################################
-msg "Configuring Vim and NeoVim"
+if [[ $# -eq 0 ]] || containsElement vim $@; then
+	msg "Configuring Vim and NeoVim"
 
-rsp "Install Vim plugins now? [y|N]" response
-if [[ $response =~ (y|yes|Y) ]]; then
-	if [[ ! -e ~/.vim/autoload/plug.vim ]]; then 
-		running "installing vim-plug"
-		curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+	rsp "Install Vim plugins now? [y|N]" response
+	if [[ $response =~ (y|yes|Y) ]]; then
+		if [[ ! -e ~/.vim/autoload/plug.vim ]]; then 
+			running "installing vim-plug"
+			curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 				https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim > /dev/null 2>&1 
-		chk
-	fi
-	running "installing vim plugins"
-	vim +PluginInstall +qall > /dev/null 2>&1
-	chk
-fi
+							chk
+						fi
+						running "installing vim plugins"
+						vim +PluginInstall +qall > /dev/null 2>&1
+						chk
+					fi
+				fi
 
 ################################################################
 # iTerm Setup
 ################################################################
-msg "Configuring iTerm2"
+if [[ $# -eq 0 ]] || containsElement iterm $@; then
+	msg "Configuring iTerm2"
 
-rsp "Install fonts? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-	# need fontconfig to install/build fonts
-	require_brew fontconfig
-	./fonts/install.sh
-	brew tap caskroom/fonts
-	require_cask font-fontawesome
-	require_cask font-awesome-terminal-fonts
-	require_cask font-hack
-	require_cask font-inconsolata-dz-for-powerline
-	require_cask font-inconsolata-g-for-powerline
-	require_cask font-inconsolata-for-powerline
-	require_cask font-roboto-mono
-	require_cask font-roboto-mono-for-powerline
-	require_cask font-source-code-pro
-	ok
+	rsp "Install fonts? [y|N] " response
+	if [[ $response =~ (y|yes|Y) ]];then
+		# need fontconfig to install/build fonts
+		require_brew fontconfig
+		./fonts/install.sh
+		brew tap caskroom/fonts
+		require_cask font-fontawesome
+		require_cask font-awesome-terminal-fonts
+		require_cask font-hack
+		require_cask font-inconsolata-dz-for-powerline
+		require_cask font-inconsolata-g-for-powerline
+		require_cask font-inconsolata-for-powerline
+		require_cask font-roboto-mono
+		require_cask font-roboto-mono-for-powerline
+		require_cask font-source-code-pro
+		ok
+	fi
+
+	running "loading cutom iTerm2 settings"
+	# Specify the preferences directory
+	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/misc/iterm2_profiles/"
+	# Tell iTerm2 to use the custom preferences in the directory
+	defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
+	chk
 fi
-
-running "loading cutom iTerm2 settings"
-# Specify the preferences directory
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/misc/iterm2_profiles/"
-# Tell iTerm2 to use the custom preferences in the directory
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-chk
 
 echo
 echo

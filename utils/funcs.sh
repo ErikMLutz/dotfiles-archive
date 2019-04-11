@@ -1,3 +1,6 @@
-contains() {
-    [[ $1 =~ (^|[[:space:]])$2($|[[:space:]]) ]] && exit(0) || exit(1)
+containsElement () {
+  local array match="$1"
+  shift
+  for array; do [[ "$array" == "$match" ]] && return 0; done
+  return 1
 }
