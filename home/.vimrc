@@ -19,7 +19,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'airblade/vim-rooter' " cd's to project root directory on file open
   Plug 'editorconfig/editorconfig-vim'
   Plug 'itchyny/lightline.vim'
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'tpope/vim-eunuch'
@@ -34,7 +34,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'alvan/vim-closetag'
   Plug 'Townk/vim-autoclose'
   Plug 'rking/ag.vim'
-  Plug 'ajh17/VimCompletesMe'
   Plug 'vimwiki/vimwiki'
   Plug 'mattn/calendar-vim'
   Plug 'godlygeek/tabular'
@@ -42,6 +41,18 @@ call plug#begin('~/.vim/plugged')
   Plug 'suan/vim-instant-markdown'
   Plug 'tbabej/taskwiki'
   Plug 'chrisbra/csv.vim'
+  Plug 'svermeulen/vim-yoink'
+  Plug 'svermeulen/ncm2-yoink'
+  Plug 'roxma/nvim-yarp'
+  Plug 'ncm2/ncm2'
+  Plug 'ncm2/ncm2-bufword'
+  Plug 'ncm2/ncm2-path'
+  Plug 'ncm2/ncm2-github'
+  Plug 'ncm2/ncm2-tmux'
+  Plug 'ncm2/ncm2-syntax'
+  Plug 'ncm2/ncm2-jedi'
+  Plug 'ncm2/ncm2-pyclang'
+  Plug 'ncm2/ncm2-vim'
 call plug#end()
 
 " }}}
@@ -70,7 +81,6 @@ let g:closetag_filenames = '*.xml'
 " }}}
 " filetype {{{
 filetype indent on
-autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 " }}}
 " fzf {{{
 " Configure FZF plugin
@@ -116,6 +126,19 @@ let g:lightline = {
   \         'git': 'fugitive#head'
   \     },
   \ }
+" }}}
+" ncm2 {{{
+augroup ncm2
+	autocmd!
+	autocmd BufEnter * call ncm2#enable_for_buffer() " enable ncm2 for all buffers
+augroup END
+set completeopt=noinsert,menuone,noselect
+
+" suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+" found' messages
+set shortmess+=c
+
+
 " }}}
 " rooter {{{
 let g:rooter_change_directory_for_non_project_files = ''
@@ -238,18 +261,22 @@ noremap <silent> <leader>q :q!<CR>
 nnoremap <silent> <leader>w :w<CR>
 
 " vimwiki
-nmap <Leader>wn <Plug>VimwikiDiaryNextDay
-nmap <Leader>wp <Plug>VimwikiDiaryPrevDay
+nnoremap <Leader>wn <Plug>VimwikiDiaryNextDay
+nnoremap <Leader>wp <Plug>VimwikiDiaryPrevDay
 
 " moving lines
-nmap ∆ :m +1<CR>
-nmap ˚ :m -2<CR>
+nnoremap ∆ :m +1<CR>
+nnoremap ˚ :m -2<CR>
 
 " using enter to select items from autocomplete menu without inserting new line
 inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
 
+" Use <TAB> to select the popup menu:
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
 " terminal bindings
-tnoremap <ESC> <C-\><C-n>
+" tnoremap <ESC> <C-\><C-n>
 " }}}
 " Folding {{{
 set foldenable
@@ -376,6 +403,12 @@ augroup markdown
 	autocmd!
 	autocmd BufRead,BufNewFile *.md setlocal foldmethod=expr
 	autocmd BufRead,BufNewFile *.md setlocal foldexpr=MarkdownLevel()  
+augroup END
+" }}}
+" xml {{{
+augroup xml
+	autocmd!
+	autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 " }}}
 " }}}
