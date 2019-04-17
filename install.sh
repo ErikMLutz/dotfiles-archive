@@ -162,6 +162,8 @@ fi
 if [[ $# -eq 0 ]] || containsElement git $@; then
 	msg "Configuring Git."
 
+	git config --global core.editor nvim
+
 	defaultName=$( git config --global user.name )
 	defaultEmail=$( git config --global user.email )
 	defaultGithub=$( git config --global github.user )
