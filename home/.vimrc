@@ -53,6 +53,8 @@ call plug#begin('~/.vim/plugged')
   Plug 'ncm2/ncm2-jedi'
   Plug 'ncm2/ncm2-pyclang'
   Plug 'ncm2/ncm2-vim'
+  Plug 'Shougo/neco-vim'
+  Plug 'Shougo/neco-syntax'
 call plug#end()
 
 " }}}
@@ -138,7 +140,8 @@ set completeopt=noinsert,menuone,noselect
 " found' messages
 set shortmess+=c
 
-
+" c++ completion library
+let g:ncm2_pyclang#library_path = '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
 " }}}
 " rooter {{{
 let g:rooter_change_directory_for_non_project_files = ''
@@ -260,23 +263,22 @@ nnoremap <silent> <C-s> :vsplit<CR>
 noremap <silent> <leader>q :q!<CR>
 nnoremap <silent> <leader>w :w<CR>
 
-" vimwiki
-nnoremap <Leader>wn <Plug>VimwikiDiaryNextDay
-nnoremap <Leader>wp <Plug>VimwikiDiaryPrevDay
-
 " moving lines
 nnoremap ∆ :m +1<CR>
 nnoremap ˚ :m -2<CR>
 
 " using enter to select items from autocomplete menu without inserting new line
-inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
+inoremap <buffer><expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
 
 " Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <buffer><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <buffer><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " terminal bindings
 " tnoremap <ESC> <C-\><C-n>
+
+" copy all
+nnoremap <leader>y :%y<CR>
 " }}}
 " Folding {{{
 set foldenable
@@ -316,6 +318,7 @@ augroup cpp
 	autocmd!
 	autocmd Filetype cpp nnoremap <C-C> :w<CR>:split<CR>:resize 20<CR>:terminal g++ -o %:r.out %<CR> 
 	autocmd Filetype cpp nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:terminal ./%:r.out<CR>
+	autocmd FileType c,cpp nnoremap <buffer> gd :<c-u>call ncm2_pyclang#goto_declaration()<cr>	
 augroup END
 " }}}
 " fzf {{{

@@ -1,1 +1,2 @@
-set foldmethod=expr
+setlocal foldmethod=expr
+setlocal foldexpr=MarkdownLevel()  
