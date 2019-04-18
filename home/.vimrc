@@ -268,11 +268,11 @@ nnoremap ∆ :m +1<CR>
 nnoremap ˚ :m -2<CR>
 
 " using enter to select items from autocomplete menu without inserting new line
-inoremap <buffer><expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
+inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
 
 " Use <TAB> to select the popup menu:
-inoremap <buffer><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <buffer><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " terminal bindings
 " tnoremap <ESC> <C-\><C-n>
