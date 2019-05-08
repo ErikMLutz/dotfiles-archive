@@ -55,6 +55,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'ncm2/ncm2-vim'
   Plug 'Shougo/neco-vim'
   Plug 'Shougo/neco-syntax'
+  Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
 " }}}
@@ -79,7 +80,7 @@ function! ToggleCalendar()
 endfunction
 " }}}
 " closetag {{{ 
-let g:closetag_filenames = '*.xml'
+" let g:closetag_filenames = '*.xml'
 " }}}
 " filetype {{{
 filetype indent on
@@ -213,7 +214,7 @@ set relativenumber " line numbers relative to current line
 " plugins
 map ; :Files<CR>
 nnoremap <leader>o :NERDTreeToggle<CR>
-nnoremap <leader><space> :nohlsearch<CR>
+nnoremap <silent> <leader><space> :nohlsearch<CR>
 nnoremap <leader>u :GundoToggle<CR>
 nnoremap <leader>a :Ag 
 
@@ -279,6 +280,10 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " copy all
 nnoremap <leader>y :%y<CR>
+
+" indenting 
+"nnoremap <C-t> a<C-t><Esc>
+"nnoremap <C-d> a<C-d><Esc>
 " }}}
 " Folding {{{
 set foldenable

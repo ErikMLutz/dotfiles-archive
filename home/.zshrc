@@ -98,6 +98,8 @@ autoload -U compinit && compinit
 source $ZSH/oh-my-zsh.sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+source ~/.dotfiles/utils/funcs.sh
+
 
 # User configuration
 
