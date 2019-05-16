@@ -8,7 +8,7 @@ containsElement () {
 repos () {
 	if [[ $# -eq 0 ]]; then
 		cd ~/repos
-	elif containsElement pull $@; then
+	elif containsElement pull $@ || containsElement up $@; then
 		pushd ~/repos > /dev/null 2>&1
 		for directory in */ ; do
 			echo "Updating $directory:"
@@ -25,5 +25,9 @@ repos () {
 			echo
 		done
 		popd > /dev/null 2>&1
+	elif [ -d ~/repos/$1 ]; then
+		cd ~/repos/$1
+	else;
+		echo "Not a valid argument for repos."
 	fi
 }

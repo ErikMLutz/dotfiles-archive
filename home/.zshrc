@@ -1,7 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+echo "Exporting DOTFILES"
 export DOTFILES=$HOME/.dotfiles
 
+echo "Exporting PATH"
 export PATH=/usr/local/opt/grep/libexec/gnubin:$PATH
 export PATH=/bin:$PATH
 export PATH=/usr/bin:$PATH
@@ -10,8 +12,10 @@ export PATH=/sbin:$PATH
 export PATH=/usr/sbin:$PATH
 export PATH=$DOTFILES/bin:$PATH
 
+echo "Sourcing FZF"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+echo "Exporting iTerm and Zsh variables"
 # Path to your oh-my-zsh installation.
 export TERM="xterm-256color"
 export ZSH=~/".oh-my-zsh"
@@ -28,10 +32,14 @@ POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 
+echo "Checking for zsh-autosuggestions"
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
+	echo "Installing zsh-autosuggestions"
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
+echo "Checking for zsh-syntax-highlighting"
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
+	echo "Installing zsh-syntaz-highlighting"
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
@@ -87,17 +95,22 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+echo "Specifying plugins"
 plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
   docker
 )
+echo "Autoloading compinit"
 autoload -U compinit && compinit
 
+echo "Sourcing oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
+echo "Sourcing zsh-syntax-highlighting"
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+echo "Sourcing custom funcs"
 source ~/.dotfiles/utils/funcs.sh
 
 
