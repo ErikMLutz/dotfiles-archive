@@ -56,6 +56,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'Shougo/neco-vim'
   Plug 'Shougo/neco-syntax'
   Plug 'scrooloose/nerdcommenter'
+  Plug 'henrik/vim-indexed-search'
 call plug#end()
 
 " }}}
