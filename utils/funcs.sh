@@ -31,3 +31,17 @@ repos () {
 		echo "Not a valid argument for repos."
 	fi
 }
+
+dotfiles () {
+	if [[ $# -eq 0 ]]; then
+		cd ~/.dotfiles
+	elif containsElement install $@; then
+		pushd ~/.dotfiles > /dev/null 2>&1
+		./install.sh $@
+		popd > /dev/null 2>&1
+	elif [ -d ~/repos/$1 ]; then
+		cd ~/repos/$1
+	else;
+		echo "Not a valid argument for dotfiles."
+	fi
+}

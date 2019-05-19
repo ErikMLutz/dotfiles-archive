@@ -57,12 +57,18 @@ call plug#begin('~/.vim/plugged')
   Plug 'Shougo/neco-syntax'
   Plug 'scrooloose/nerdcommenter'
   Plug 'henrik/vim-indexed-search'
+  Plug 'OmniSharp/omnisharp-vim'
 call plug#end()
 
 " }}}
 " Configure Plugins {{{
 " ag {{{
 let g:ag_working_path_mode="r"
+" }}}
+" ale {{{
+let g:ale_linters = {
+\ 'cs': ['OmniSharp']
+\}
 " }}}
 " calendar-vim {{{
 let g:calendar_options = 'nornu'
@@ -135,6 +141,16 @@ let g:lightline = {
 augroup ncm2
 	autocmd!
 	autocmd BufEnter * call ncm2#enable_for_buffer() " enable ncm2 for all buffers
+    autocmd User Ncm2Plugin call ncm2#register_source({
+            \ 'name' : 'cs',
+            \ 'priority': 9,
+            \ 'subscope_enable': 1,
+            \ 'scope': ['cs'],
+            \ 'mark': 'omnisharp',
+            \ 'word_pattern': '[\w\-]+',
+            \ 'complete_pattern': ':\s*',
+            \ 'on_complete': ['ncm2#on_complete#omni', 'OmniSharp#Complete'],
+            \ })
 augroup END
 set completeopt=noinsert,menuone,noselect
 
@@ -144,6 +160,11 @@ set shortmess+=c
 
 " c++ completion library
 let g:ncm2_pyclang#library_path = '/Library/Developer/CommandLineTools/usr/lib/libclang.dylib'
+
+" use OmniSharp for C# files
+"let g:LanguageClient_serverCommands = {
+  "\ 'cs': ['OmniSharp']
+  "\ }
 " }}}
 " rooter {{{
 let g:rooter_change_directory_for_non_project_files = ''
