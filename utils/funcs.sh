@@ -18,7 +18,7 @@ repos () {
 				git pull
 			elif [ -d .svn ]; then
 				svn up
-			else;
+			else
 				echo "No Git or SVN versioning detected."
 			fi
 			popd > /dev/null 2>&1
@@ -27,7 +27,7 @@ repos () {
 		popd > /dev/null 2>&1
 	elif [ -d ~/repos/$1 ]; then
 		cd ~/repos/$1
-	else;
+	else
 		echo "Not a valid argument for repos."
 	fi
 }
@@ -43,9 +43,7 @@ dotfiles () {
 		pushd ~/.dotfiles > /dev/null 2>&1
 		./install.sh $@
 		popd > /dev/null 2>&1
-	elif [ -d ~/repos/$1 ]; then
-		cd ~/repos/$1
-	else;
+	else
 		echo "Not a valid argument for dotfiles."
 	fi
 }

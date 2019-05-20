@@ -5,8 +5,9 @@ source ~/.dotfiles/utils/log.sh
 source ~/.dotfiles/utils/funcs.sh
 source ~/.dotfiles/utils/requirers.sh
 
-echo -e "\n\nDOTFILES AUTOMATIC INSTALLATION AND SYSTEM CONFIGURATION"
-echo -e "This program will install a variety of software elements, change system settings, and place configuration files in appropriate locations.\n\n"
+echo -e "DOTFILES AUTOMATIC INSTALLATION AND SYSTEM CONFIGURATION"
+echo -e "========================================================"
+echo -e "This program will install a variety of software elements, change system settings, and place configuration files in appropriate locations."
 
 ################################################################
 # Administrator Access
@@ -269,6 +270,12 @@ if [[ $# -eq 0 ]] || containsElement vim $@; then
 						fi
 						running "installing vim plugins"
 						vim +PluginInstall +qall > /dev/null 2>&1
+						chk
+						running "installing neovim plugins"
+						nvim -c "PlugInstall | qa" > /dev/null 2>&1
+						chk
+						running "installing OmniSharp"
+						nvim -c "set ft=cs | OmniSharpInstall | qa" > /dev/null 2>&1
 						chk
 					fi
 				fi
