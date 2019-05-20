@@ -35,6 +35,10 @@ repos () {
 dotfiles () {
 	if [[ $# -eq 0 ]]; then
 		cd ~/.dotfiles
+	elif containsElement pull $@ || containsElement up $@; then
+		pushd ~/.dotfiles > /dev/null 2>&1
+		git pull
+		popd > /dev/null 2>&1
 	elif containsElement install $@; then
 		pushd ~/.dotfiles > /dev/null 2>&1
 		./install.sh $@
