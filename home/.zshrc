@@ -19,6 +19,7 @@ zchk
 zrunning "Sourcing FZF"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 zchk
+#export FZF_DEFAULT_COMMAND='ag --path-to-ignore ~/.ignore --files-with-matches'
 
 zrunning "Exporting iTerm and Zsh variables"
 # Path to your oh-my-zsh installation.
@@ -32,11 +33,12 @@ zchk
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="powerlevel9k/powerlevel9k"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(time)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode time)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
+POWERLEVEL9K_VI_COMMAND_MODE_STRING=""
 
 zrunning "Checking for zsh-autosuggestions"
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
@@ -182,4 +184,9 @@ zchk
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#alias ag="ag --path-to-ignore ~/.ignore --hidden --ignore-case --files-with-matches"
+
+bindkey -v
+export KEYTIMEOUT=.1
+
 clear

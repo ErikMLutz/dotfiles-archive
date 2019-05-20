@@ -126,14 +126,19 @@ endif
 " }}}
 " lightline {{{
 " Configure LightLine plugin
+function! FullPathForLightline()
+    return expand('%')
+endfunction
+
 let g:lightline = {
   \   	'colorscheme': 'wombat',
   \     'active': {
-  \         'left': [['mode', 'paste' ], ['filename', 'modified']],
-  \         'right': [['lineinfo'], ['percent'], ['git']]
+  \         'left': [['mode', 'paste' ], ['filename', 'modified'], ['git']],
+  \         'right': [['lineinfo'], ['percent'], ['filepath']]
   \     },
   \     'component_function': {
-  \         'git': 'fugitive#head'
+  \         'git': 'fugitive#head',
+  \         'filepath': 'FullPathForLightline',
   \     },
   \ }
 " }}}
