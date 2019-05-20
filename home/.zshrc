@@ -1,9 +1,12 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-echo "Exporting DOTFILES"
+echo
+echo "               ZSHRC               "
+echo "==================================="
 export DOTFILES=$HOME/.dotfiles
+source $DOTFILES/utils/log.sh
 
-echo "Exporting PATH"
+zrunning "Exporting PATH"
 export PATH=/usr/local/opt/grep/libexec/gnubin:$PATH
 export PATH=/bin:$PATH
 export PATH=/usr/bin:$PATH
@@ -11,14 +14,17 @@ export PATH=/usr/local/bin:$PATH
 export PATH=/sbin:$PATH
 export PATH=/usr/sbin:$PATH
 export PATH=$DOTFILES/bin:$PATH
+zchk
 
-echo "Sourcing FZF"
+zrunning "Sourcing FZF"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+zchk
 
-echo "Exporting iTerm and Zsh variables"
+zrunning "Exporting iTerm and Zsh variables"
 # Path to your oh-my-zsh installation.
 export TERM="xterm-256color"
 export ZSH=~/".oh-my-zsh"
+zchk
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -32,15 +38,21 @@ POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 
-echo "Checking for zsh-autosuggestions"
+zrunning "Checking for zsh-autosuggestions"
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
 	echo "Installing zsh-autosuggestions"
 	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	zchk
+else
+	zok
 fi
-echo "Checking for zsh-syntax-highlighting"
+zrunning "Checking for zsh-syntax-highlighting"
 if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]; then
 	echo "Installing zsh-syntaz-highlighting"
 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	zchk
+else
+	zok
 fi
 
 # Set list of themes to pick from when loading at random
@@ -95,23 +107,51 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-echo "Specifying plugins"
+zrunning "Specifying plugins"
 plugins=(
   git
   zsh-autosuggestions
   zsh-syntax-highlighting
   docker
 )
-echo "Autoloading compinit"
-autoload -U compinit && compinit
+zok
 
-echo "Sourcing oh-my-zsh"
+#echo "Autoloading compinit"
+#autoload -U compinit && compinit
+#zok
+# Perform compinit only once a day.
+zrunning "Autoloading compinit"
+autoload -Uz compinit
+zchk
+
+setopt EXTENDEDGLOB
+for dump in $ZSH_COMPDUMP(#qN.m1); do
+	zrunning "Running compinit"
+	compinit
+	zchk
+	if [[ -s "$dump" && (! -s "$dump.zwc" || "$dump" -nt "$dump.zwc") ]]; then
+		zcompile "$dump"
+	fi
+done
+unsetopt EXTENDEDGLOB
+zrunning "Initializing completions"
+compinit -C
+zchk
+
+HISTSIZE=1000
+SAVEHIST=1000
+
+zrunning "Sourcing oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-echo "Sourcing zsh-syntax-highlighting"
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+zchk
 
-echo "Sourcing custom funcs"
+zrunning "Sourcing zsh-syntax-highlighting"
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+zchk
+
+zrunning "Sourcing custom funcs"
 source ~/.dotfiles/utils/funcs.sh
+zchk
 
 
 # User configuration

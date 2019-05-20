@@ -53,3 +53,32 @@ function rsp() {
 		echo -e ${ESC_SEQ}"1A\r " 
 	fi
 }
+
+function zmsg() {
+	echo -e "\n$fg[green]Dotfiles Installer$fg[default] - "$1
+}
+
+function zok() {
+	echo -e "$fg[green][ok]$fg[default] "$1
+}
+
+function zrunning() {
+	echo -en "$fg[yellow] ⇒ $fg[default]"$1": "
+}
+
+function zaction() {
+	echo -e "\n$fg[yellow][action]:$fg[default]\n ⇒ $1..."
+}
+
+function zwarn() {
+	echo -e "$fg[yellow][warning]$fg[default] "$1
+}
+
+function zerror() {
+	echo -e "$fg[red][error]$fg[default] "$1
+}
+
+function zchk() {
+	if [ $? != 0 ]; then zerror $1; else zok; fi
+}
+
