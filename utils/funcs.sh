@@ -41,7 +41,7 @@ dotfiles () {
 		popd > /dev/null 2>&1
 	elif containsElement install $@; then
 		pushd ~/.dotfiles > /dev/null 2>&1
-		./install.sh $@
+		./install.sh ${@:2}
 		popd > /dev/null 2>&1
 	else
 		echo "Not a valid argument for dotfiles."
