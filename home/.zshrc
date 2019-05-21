@@ -19,7 +19,7 @@ zchk
 zrunning "Sourcing FZF"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 zchk
-#export FZF_DEFAULT_COMMAND='ag --path-to-ignore ~/.ignore --files-with-matches'
+export FZF_DEFAULT_COMMAND='fzf_search_command'
 
 zrunning "Exporting iTerm and Zsh variables"
 # Path to your oh-my-zsh installation.
@@ -109,7 +109,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-#zrunning "Specifying plugins"
+zrunning "Specifying plugins"
 plugins=(
   git
   zsh-autosuggestions

@@ -117,7 +117,7 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 let g:fzf_files_options =
-  \ '--preview "head -10 {}"'
+  \ '--preview "head -10 {}" --delimiter=: --nth=2..'
 " }}}
 " gundo {{{
 if has('python3')
