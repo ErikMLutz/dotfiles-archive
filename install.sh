@@ -208,9 +208,9 @@ if [[ $# -eq 0 ]] || containsElement shell $@; then
 	fi
 	chk
 
-	running "installing powerlevel9k theme"
-	if [[ ! -d ~/".oh-my-zsh/custom/themes/powerlevel9k" ]]; then
-		git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+	running "installing powerlevel10k theme"
+	if [[ ! -d ~/".oh-my-zsh/custom/themes/powerlevel10k" ]]; then
+		git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
 	fi
 	chk
 fi

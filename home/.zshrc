@@ -31,12 +31,12 @@ zchk
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode time)
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
+POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=3
 POWERLEVEL9K_VI_COMMAND_MODE_STRING=""
 
@@ -109,7 +109,7 @@ fi
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-zrunning "Specifying plugins"
+#zrunning "Specifying plugins"
 plugins=(
   git
   zsh-autosuggestions
@@ -139,9 +139,6 @@ unsetopt EXTENDEDGLOB
 zrunning "Initializing completions"
 compinit -C
 zchk
-
-HISTSIZE=1000
-SAVEHIST=1000
 
 zrunning "Sourcing oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
