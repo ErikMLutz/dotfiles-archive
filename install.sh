@@ -209,8 +209,12 @@ if [[ $# -eq 0 ]] || containsElement shell $@; then
 	chk
 
 	running "installing powerlevel10k theme"
-	if [[ ! -d ~/".oh-my-zsh/custom/themes/powerlevel10k" ]]; then
+	if [[ ! -d ~/".oh-my-zsh/themes/powerlevel10k" ]]; then
 		git clone https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/themes/powerlevel10k
+	else
+		pushd ~/.oh-my-zsh/themes/powerlevel10k > /dev/null 2>&1
+		git pull
+		popd > /dev/null 2>&1
 	fi
 	chk
 fi
