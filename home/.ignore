@@ -1,0 +1,4 @@
+*.pyc
+.git/*
+.svn/*
+.DS_Store
