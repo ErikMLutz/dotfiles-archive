@@ -2,3 +2,6 @@
 .git/*
 .svn/*
 .DS_Store
+*.meta
+*.asset
+
