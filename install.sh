@@ -304,7 +304,7 @@ if [[ $# -eq 0 ]] || containsElement iterm $@; then
 		ok
 	fi
 
-	running "loading cutom iTerm2 settings"
+	running "loading custom iTerm2 settings"
 	# Specify the preferences directory
 	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/misc/iterm2_profiles/"
 	# Tell iTerm2 to use the custom preferences in the directory
