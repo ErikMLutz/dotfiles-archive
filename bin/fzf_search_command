@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-ag --path-to-ignore ~/.ignore --hidden --ignore-case --filename-pattern .+  | sed 's/^/:/'
-ag --nobreak --nonumbers --noheading .+
+#ag --path-to-ignore ~/.ignore --hidden --ignore-case --filename-pattern .+  | sed 's/^/:/'
+ag --path-to-ignore ~/.ignore --hidden --ignore-case --filename-pattern .+
+#ag --nobreak --nonumbers --noheading .+
