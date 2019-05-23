@@ -186,4 +186,9 @@ zchk
 bindkey -v
 export KEYTIMEOUT=.1
 
+alias dcu="docker-compose up -d"
+alias dcd="docker-compose down"
+alias dcr="docker-compose down; docker-compose up -d; docker exec -it discover-airflow_webserver_1 /bin/bash"
+alias dce="docker exec -it discover-airflow_webserver_1 /bin/bash"
+
 clear
