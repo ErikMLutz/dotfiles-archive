@@ -45,6 +45,7 @@ dotfiles () {
 
 
 dk () {
+	pushd ~/repos/discover-airflow > /dev/null 2>&1
 	if [[ $# -eq 0 ]]; then
 		echo ""
 		echo "Usage: dk [OPTIONS]"
@@ -127,4 +128,5 @@ dk () {
 			docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"
 		fi
 	fi
+	popd > /dev/null 2>&1
 }
