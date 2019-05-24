@@ -296,7 +296,9 @@ nnoremap ∆ :m +1<CR>
 nnoremap ˚ :m -2<CR>
 
 " using enter to select items from autocomplete menu without inserting new line
-inoremap <expr> <cr> ((pumvisible())?("\<C-y>"):("\<cr>"))
+" additionally, this deletes the rest of the word if you start a completion
+" in the middle of a word
+inoremap <expr> <cr> ((pumvisible())?("\<C-y><ESC>vb\"cyviw\"cpa"):("\<cr>"))
 
 " Use <TAB> to select the popup menu:
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
