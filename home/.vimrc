@@ -58,6 +58,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'scrooloose/nerdcommenter'
   Plug 'henrik/vim-indexed-search'
   Plug 'OmniSharp/omnisharp-vim'
+  Plug 'romainl/vim-qf'
 call plug#end()
 
 " }}}
@@ -198,6 +199,9 @@ let g:vim_markdown_fenced_languages = ['python=python', 'csharp=cs', 'c++=cpp', 
 " }}}
 " vim-instant-markdown {{{
 let g:instant_markdown_autostart = 0
+" }}}
+" vim-qf {{{
+let g:qf_mapping_ack_style = 1
 " }}}
 " }}}
 " tmux {{{

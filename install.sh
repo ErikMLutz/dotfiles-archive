@@ -105,6 +105,7 @@ if [[ $# -eq 0 ]] || containsElement packages $@; then
 	vim
 	wget
 	zsh
+	colordiff
 	)
 
 	for pkg in "${brew_packages[@]}"; do require_brew $pkg; done
