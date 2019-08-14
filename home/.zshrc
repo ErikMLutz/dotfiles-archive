@@ -181,6 +181,7 @@ zchk
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #alias ag="ag --path-to-ignore ~/.ignore --hidden --ignore-case --files-with-matches"
+alias sdiff="svn diff | colordiff"
 
 bindkey -v
 export KEYTIMEOUT=.1
