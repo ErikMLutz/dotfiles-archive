@@ -53,12 +53,15 @@ call plug#begin('~/.vim/plugged')
   Plug 'ncm2/ncm2-jedi'
   Plug 'ncm2/ncm2-pyclang'
   Plug 'ncm2/ncm2-vim'
+  Plug 'ncm2/ncm2-tern',  {'do': 'npm install'}
   Plug 'Shougo/neco-vim'
   Plug 'Shougo/neco-syntax'
   Plug 'scrooloose/nerdcommenter'
   Plug 'henrik/vim-indexed-search'
   Plug 'OmniSharp/omnisharp-vim'
   Plug 'romainl/vim-qf'
+  Plug 'nvie/vim-flake8'
+  Plug 'posva/vim-vue'
 call plug#end()
 
 " }}}
@@ -349,6 +352,7 @@ set writebackup
 augroup python
 	autocmd!
 	autocmd Filetype python nnoremap <C-x> :w<CR>:split<CR>:resize 20<CR>:terminal python3 %<CR>
+	autocmd Filetype python set colorcolumn=80 
 augroup END
 " }}}
 " C++ {{{

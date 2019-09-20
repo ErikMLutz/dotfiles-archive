@@ -106,6 +106,7 @@ if [[ $# -eq 0 ]] || containsElement packages $@; then
 	wget
 	zsh
 	colordiff
+	direnv
 	)
 
 	for pkg in "${brew_packages[@]}"; do require_brew $pkg; done
