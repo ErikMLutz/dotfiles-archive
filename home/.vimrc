@@ -340,12 +340,22 @@ set hlsearch " highlight matches
 set ignorecase " case insensitive searches
 set smartcase " case sensitive if upper case letters in search
 " }}}
-" Backups {{{
+" Backups and Undos {{{
+" backup settings
 set backup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set backupskip=/tmp/*,/private/tmp/*
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set writebackup
+" undo settings
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo-dir")
+    call mkdir($HOME."/.vim/undo-dir", "", 0700)
+endif
+set undodir=~/.vim/undo-dir
+set undofile
 " }}}
 " File Type Specific Settings {{{
 " Python {{{

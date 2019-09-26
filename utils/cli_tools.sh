@@ -130,3 +130,15 @@ dk () {
 	fi
 	popd > /dev/null 2>&1
 }
+
+
+aws_init () {
+	TOKEN_CODE=$1
+	unset AWS_ACCESS_KEY_ID
+	unset AWS_SECRET_ACCESS_KEY
+	unset AWS_SESSION_TOKEN
+	CREDS=$(aws sts get-session-token --serial-number arn:aws:iam::473023044298:mfa/elutz --token-code $TOKEN_CODE)
+	export AWS_ACCESS_KEY_ID=$(echo $CREDS | jq -r '.Credentials.AccessKeyId')
+	export AWS_SECRET_ACCESS_KEY=$(echo $CREDS | jq -r '.Credentials.SecretAccessKey')
+	export AWS_SESSION_TOKEN=$(echo $CREDS | jq -r '.Credentials.SessionToken')
+}
