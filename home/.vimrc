@@ -466,8 +466,15 @@ augroup xml
 	autocmd Filetype xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 augroup END
 " }}}
+" yaml {{{
+augroup yaml
+	autocmd!
+	autocmd Filetype yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+augroup END
+" }}}
 " }}}
 " Misc {{{
+set mouse=a " allow scrolling with mouse
 set lazyredraw " redraw only when we need to.
 set clipboard=unnamed " use the default OSX clipboard
 " }}}
